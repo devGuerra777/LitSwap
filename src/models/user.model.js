@@ -11,3 +11,4 @@ import mongoose from "mongoose";
 });
 // required para especificar si un campo es obligatorio, unique para asegurar que no haya duplicados
 export default mongoose.model('User', userSchema )
+
