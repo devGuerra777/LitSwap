@@ -68,8 +68,8 @@ export const logout = (req,res) =>{
 }
 
 
-/*  Aqui despues de ejecutar la funcion de la validacion del token se evlua si esta el usario en la base de datos
-    de acuerdo al token, si esta entonces reponde con la informacion del usuario. 
+/*  Aqui despues de ejecutar la funcion de la validacion del token se evalua si esta el usuario en la base de datos 
+    si esta entonces reponde con la informacion del usuario. 
 */
 export const profile = async (req,res) => {
     const userFound = await User.findById(req.user.id)

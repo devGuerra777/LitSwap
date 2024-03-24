@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 //coleecion de  intercambios
 
-const swapSchema = mongoose.Schema({
+const swapSchema = new mongoose.Schema({
     requestUser: {type:String, required: true},
     respondUser: {type:String, required: true},
     requestBook:{

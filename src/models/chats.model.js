@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 //coleecion de chats
 
-const chatSchema = mongoose.Schema({
+const chatSchema = new mongoose.Schema({
     date: {type: Date, required: true},
 });
 

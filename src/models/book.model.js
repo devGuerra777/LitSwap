@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 //coleccion de libros
 
-const booksSchema = mongoose.Schema({
+const booksSchema = new mongoose.Schema({
     title: {type: String, required:true},
     ISDN: {type: String, required: true, unique: true},
     edit: {type: String, required: true}, //editorial
