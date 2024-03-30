@@ -12,7 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+<<<<<<< HEAD
     "cookie-parser": "^1.4.6",
+=======
+>>>>>>> bd9a86ed218b3161c4d2ec243857739e38f00aa4
     "express": "^4.18.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.1",

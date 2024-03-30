@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 //coleecion de  intercambios
 
+<<<<<<< HEAD
 const swapSchema = new mongoose.Schema({
+=======
+const swapSchema = mongoose.Schema({
+>>>>>>> bd9a86ed218b3161c4d2ec243857739e38f00aa4
     requestUser: {type:String, required: true},
     respondUser: {type:String, required: true},
     requestBook:{
