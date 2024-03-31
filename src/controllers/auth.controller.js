@@ -65,7 +65,6 @@ export const logout = (req,res) =>{
         expires: new Date (0)
     })
     return res.sendStatus(200)
-<<<<<<< HEAD
 }
 
 
@@ -86,6 +85,4 @@ export const profile = async (req,res) => {
         collegeCareer: userFound.collegeCareer,
         dateAdmission: userFound.dateAdmission
     })
-=======
->>>>>>> bd9a86ed218b3161c4d2ec243857739e38f00aa4
 }
