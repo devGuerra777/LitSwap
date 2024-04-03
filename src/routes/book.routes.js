@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {authRequired} from '../middlewares/validateToken.js';
 import {getBooks,getBook,createBook,deleteBook,updateBook, getBookByTag,searchBooks} from '../controllers/book.controllers.js';
+import {CreateBook} from '../Schemas Valid/auth.schema.js';
+import {validateSchema} from '../middlewares/validatesData.js';
 
 //Rutas CRUD para libros dentro de la página web
 
@@ -14,12 +16,11 @@ router.get('/books/bytag', authRequired, getBookByTag); // Buscar libros por eti
 
 router.get('/books/:id', authRequired, getBook); //OBTENER UN LIBRO BUSCADO POR ID
 
-router.post('/books', authRequired, createBook); //CREAR UN LIBRO
+router.post('/books', authRequired, validateSchema(CreateBook), createBook); //CREAR UN LIBRO
 
 router.delete('/books/:id', authRequired, deleteBook); //BORRAR UN LIBRO POR ID
 
 router.put('/books/:id', authRequired, updateBook);  //EDITAR UN LIBRO POR ID
-
 
 
 export default router;
