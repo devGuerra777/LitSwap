@@ -1,16 +1,14 @@
-// Importamos la biblioteca Mongoose para interactuar con MongoDB.
 import mongoose from "mongoose";
 
-// Definimos una función llamada connectDB que se encarga de conectar con la base de datos.
-// La palabra clave 'async' indica que esta función es asíncrona y puede contener operaciones que tomarán tiempo.
+// Uri para la base de datos en la nube: "mongodb+srv://<username>:<password>@litswap.mhotub9.mongodb.net/?retryWrites=true&w=majority&appName=LitSwap"
+const uri = "mongodb+srv://all:1234@litswap.mhotub9.mongodb.net/?retryWrites=true&w=majority&appName=LitSwap";
+
 export const connectDB = async () => {
   try {
-    // Utilizamos el método 'connect' de Mongoose para conectar con la base de datos MongoDB local llamada "litswapdb".
-    // La palabra clave 'await' pausa la ejecución de la función hasta que la operación 'connect' se complete.
-    await mongoose.connect("mongodb://localhost/litswapdb");
-    console.log('$$$DB$$$ is conected')
+    await mongoose.connect(uri);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!")
   } catch (error) {
-    // Si hay algún error durante la conexión, imprimimos un mensaje de error en la consola.
-    console.log("error");
+    console.log(error);
   }
-};
+}
