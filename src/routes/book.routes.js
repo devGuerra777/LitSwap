@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {authRequired} from '../middlewares/validateToken.js';
-import {getBooks,getBook,createBook,deleteBook,updateBook, getBookByTag,searchBooks} from '../controllers/book.controllers.js';
+import {getBooks,getBook,createBook,deleteBook,updateBook, getBookByTag,searchBooks,getRecentBooks} from '../controllers/book.controllers.js';
 
 //Rutas CRUD para libros dentro de la página web
 
@@ -20,6 +20,8 @@ router.delete('/books/:id', authRequired, deleteBook); //BORRAR UN LIBRO POR ID
 
 router.put('/books/:id', authRequired, updateBook);  //EDITAR UN LIBRO POR ID
 
+// Ruta para obtener los libros más recientes (feed)
+router.get('/feed', getRecentBooks);
 
 
 export default router;

@@ -112,3 +112,16 @@ export const searchBooks = async (req, res) => {
         res.status(500).json({ message: 'Error al buscar libros' });
     }
 };
+
+export const getRecentBooks = async (req, res) => {
+    try {
+        // Realiza la consulta a la base de datos para obtener los libros más recientes
+        const recentBooks = await Book.find().sort({ createdAt: -1 }).limit(15); // Ordena por fecha de creación descendente y limita a 10 libros
+
+        // Devuelve los libros encontrados como respuesta en formato JSON
+        res.json(recentBooks);
+    } catch (error) {
+        // Maneja cualquier error que ocurra durante la obtención de libros recientes
+        res.status(500).json({ message: 'Error al obtener libros recientes' });
+    }
+};
