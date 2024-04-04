@@ -14,7 +14,7 @@ router.get('/books/bytag', authRequired, getBookByTag); // Buscar libros por eti
 
 router.get('/books/:id', authRequired, getBook); //OBTENER UN LIBRO BUSCADO POR ID
 
-router.post('/books', authRequired, createBook); //CREAR UN LIBRO
+router.post('/books', authRequired, validateSchema(CreateBook), createBook); //CREAR UN LIBRO
 
 router.delete('/books/:id', authRequired, deleteBook); //BORRAR UN LIBRO POR ID
 
@@ -22,6 +22,5 @@ router.put('/books/:id', authRequired, updateBook);  //EDITAR UN LIBRO POR ID
 
 // Ruta para obtener los libros más recientes (feed)
 router.get('/feed', getRecentBooks);
-
 
 export default router;
