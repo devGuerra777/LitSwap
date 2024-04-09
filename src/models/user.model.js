@@ -6,8 +6,15 @@ import mongoose from "mongoose";
     studentID: { type: String, required: true, unique: true  },
     collegeCareer: { type: String, required: true },
     dateAdmission: { type: Date, required: true },
-    image: { data: Buffer, contentType: String }, // Campo de imagen como datos binarios
-    credential: { data: Buffer, contentType: String }
+    image: {
+        public_id: {type: String, required: true},
+        url: {type: String, required: true}
+    },
+    /*credential: { 
+        public_id: String,
+        url: String,
+        required: true 
+    }*/
 },{
     timestamps: true
 });

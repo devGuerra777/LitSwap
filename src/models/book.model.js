@@ -17,7 +17,10 @@ const booksSchema = new mongoose.Schema({
             required: true
         },
     tags: [String],
-    //image: { data: Buffer, contentType: String , required: true}
+    image: {
+        public_id: {type: String, required: true},
+        url: {type: String, required: true}
+    }
 },  
 {
     timestamps: true,

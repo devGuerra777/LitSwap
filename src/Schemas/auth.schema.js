@@ -24,7 +24,14 @@ export const registrerUserSchema = z.object({
     dateAdmission: z.string({
         required_error: 'dateAdmission is required'
     }),
-    // image: Se puede añadir validación para una imagen si es necesario
+    /*image: z.object({
+        public_id: z.string({
+            equired_error: 'public_id is required'
+        }),
+        url: z.string({
+            equired_error: 'secure_url is required'
+        }),
+    })*/
     // credential: Igualmente para credenciales
 });
 

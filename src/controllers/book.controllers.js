@@ -1,4 +1,6 @@
 import Book from '../models/book.model.js';
+import { UpImage, deleteImage } from "../cloudinary.js";
+import fs from 'fs-extra';
 
 export const getBooks = async (req, res) => {
     try {
@@ -12,6 +14,7 @@ export const getBooks = async (req, res) => {
 
 export const createBook = async (req, res) => {
     try {
+        const result = await UpImage(req.files.image.TempFIlePath);
         const { title, ISBN, edit, autor, sipnosis, date, language, tags } = req.body;
         const newBook = new Book({
             title,
@@ -22,10 +25,15 @@ export const createBook = async (req, res) => {
             date,
             language,
             tags,
-            user: req.user.id
+            user: req.user.id,
+            image: {
+                public_id: result.public_id,
+                url: result.secure_url
+            }
         });
         const savedBook = await newBook.save();
         res.json(savedBook);
+        await fs.unlink(req.files.image.TempFIlePath);
     } catch (error) {
         console.error('Error al crear libro:', error);
         res.status(500).json({ message: 'Error al crear libro' });
@@ -47,6 +55,10 @@ export const deleteBook = async (req, res) => {
     try {
         const book = await Book.findByIdAndDelete(req.params.id);
         if (!book) return res.status(404).json({ message: 'Libro no encontrado' });
+        if(book.image?.public_id)
+        {
+            await deleteImage(book.image.public_id);
+        }
         res.sendStatus(204);
     } catch (error) {
         console.error('Error al eliminar libro:', error);

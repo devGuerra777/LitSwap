@@ -5,10 +5,11 @@ import {login,register,profile,checkToken} from "../controllers/auth.controller.
 import {authRequired} from '../middlewares/validateToken.js';
 import {validateSchema} from '../middlewares/validatesData.js';
 import {registrerUserSchema, loginUserSchema} from '../Schemas/auth.schema.js';
+import fileUpload from 'express-fileupload';
 
 const router = Router();
-
-router.post('/register', validateSchema(registrerUserSchema), register);
+//**IMPORTANTE** DESDE ZOD NO SE PUEDE VALIDAR LA IMAGEN ENTONCES HAY QUE CREAR OTRA FUNCION QUE VALIDE LA IMAGEN
+router.post('/register', fileUpload({useTempFiles: true,tempFileDir:'./Uploads'}), validateSchema(registrerUserSchema), register);
 
 router.post('/login', validateSchema(loginUserSchema), login);
 
