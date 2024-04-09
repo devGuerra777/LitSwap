@@ -8,6 +8,7 @@ import mongoose from "mongoose";
     dateAdmission: { type: Date, required: true },
     //image: { data: Buffer, contentType: String }, // Campo de imagen como datos binarios
     //credential: { data: Buffer, contentType: String }
+    available: { type: Boolean, default: true } // Nuevo campo para indicar disponibilidad
 },{
     timestamps: true
 });
