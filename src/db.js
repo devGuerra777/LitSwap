@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-// Uri para la base de datos en la nube: "mongodb+srv://<username>:<password>@litswap.mhotub9.mongodb.net/?retryWrites=true&w=majority&appName=LitSwap"
-const uri = "mongodb+srv://all:1234@litswap.mhotub9.mongodb.net/?retryWrites=true&w=majority&appName=LitSwap";
+const uri = "mongodb+srv://vercel-admin-user:1234@cluster0.ydbhhet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 export const connectDB = async () => {
   try {

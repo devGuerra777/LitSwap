@@ -1,9 +1,6 @@
 import User from "../models/user.model.js"
 import bcrypt from 'bcryptjs'
 import { createAccessToken } from "../libs/jwt.js";
-import { UpImage } from "../cloudinary.js";
-import fs from 'fs-extra';
-import { getBooks } from "./book.controllers.js"; 
 
 export const register = async (req,res) =>{
     const {email, password, username, studentID,collegeCareer,dateAdmission} = req.body
@@ -11,9 +8,6 @@ export const register = async (req,res) =>{
     const dateAdmissionDate = new Date(dateAdmission);
 
     try {
-
-        const result = await UpImage(req.files.image.TempFIlePath);
-
         const passwordHash = await bcrypt.hash(password,10) //pasamos contraseña y el numero de veces q se ejecuta el algoritmo
 
         const newUser = new User({
@@ -23,20 +17,13 @@ export const register = async (req,res) =>{
             studentID,
             collegeCareer,
             dateAdmission: dateAdmissionDate,
-            image: {
-                public_id: result.public_id,
-                url: result.secure_url
-            } // Usar el objeto Date convertido
         });
+
         const userSaved = await newUser.save();
         const token = await createAccessToken({id: userSaved._id}) //creacion y guardado del token con el metodo en jws.js
-        //Esta funcion unlink borra la imagen del servidor para no acumular espacio.
-        await fs.unlink(req.files.image.TempFIlePath);
-        //res.cookie('token',token);//establecemos una cookie q se va llamar token, el valor es el token q hemos creado
+        
         res.json({
-            id: userSaved._id,
-            username: userSaved.username,
-            email: userSaved.email,
+            user: userSaved,
             token: token,
         });
 
@@ -44,6 +31,29 @@ export const register = async (req,res) =>{
         res.status(500).json({message:error.message});
     }
 }
+
+export const UpdateImg = async (req, res) => {
+    // Verifica si se han proporcionado archivos en la solicitud
+    if (!req.files) {
+      return res.status(400).json({ success: false, message: 'No files provided.' });
+    }
+    try {
+      // Crea un nuevo objeto de imagen para cada archivo
+      const newImages = req.files.map((file) => ({
+        name: `${uuidv4()}.${file.mimetype.split('/')[1]}`, // Genera un nombre único para el archivo
+        data: file.buffer, // Los datos del archivo (probablemente una imagen) en forma de búfer
+        contentType: file.mimetype, // El tipo de contenido del archivo (por ejemplo, image/jpeg)
+      }));
+  
+      // Actualiza el usuario en la base de datos
+      const user = await User.findByIdAndUpdate(req.params.id, { $push: { images: newImages } }, { new: true });
+      // Si no se encuentra el usuario, devuelve una respuesta con un estado 404
+      if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+    } catch (error) {
+      // Manejo de errores: devuelve una respuesta con un estado 500 y un mensaje de error
+      res.status(500).json({ message: error.message });
+    }
+  };
 
 export const login = async (req,res) =>{
     const {email, password} = req.body;
@@ -61,9 +71,7 @@ export const login = async (req,res) =>{
 
         //res.cookie('token',token);//establecemos una cookie q se va llamar token, el valor es el token q hemos creado
         res.json({
-            id: userFound._id,
-            username: userFound.username,
-            email: userFound.email,
+            user: userFound,
             token: token,
         });
 
@@ -88,30 +96,19 @@ export const profile = async (req,res) => {
         console.error('Error al obtener libros:', error);
         res.status(500).json({ message: 'Error al obtener libros' });
     }
-    return res.json({ //TAMBIEN DEBE DE COFNIGRARSE PARA RETORNAR LIBROS 
-        id: userFound._id,
-        username: userFound.username,
-        email: userFound.email,
-        studentID: userFound.studentID,
-        collegeCareer: userFound.collegeCareer,
-        dateAdmission: userFound.dateAdmission,
-        image: url
+    return res.json({
+        user: userFound
     })
 }
 
 export const checkToken = async (req,res) =>{
-    const userFound = await User.findById(req.user.id)
+    const userFound = await User.findById(req.user.id);
+
     if(!userFound)
     {
         return res.status(400).json({message: "User not found"});
     }
-    return res.json({ //TAMBIEN DEBE DE COFNIGRARSE PARA RETORNAR LIBROS 
-        id: userFound._id,
-        username: userFound.username,
-        email: userFound.email,
-        studentID: userFound.studentID,
-        collegeCareer: userFound.collegeCareer,
-        dateAdmission: userFound.dateAdmission,
-        image: url
+    return res.json({
+        user: userFound
     })
 }
